@@ -1,6 +1,6 @@
 {
   "name": "@kreativsoftware/rc-image",
-  "version": "5.18.2",
+  "version": "5.18.1",
   "description": "React easy to use image component",
   "keywords": [
     "react",
@@ -11,9 +11,6 @@
   "homepage": "http://github.com/react-component/image",
   "bugs": {
     "url": "http://github.com/react-component/image/issues"
-  },
-  "publishConfig": {
-    "registry": "https://pkgs.dev.azure.com/kreativsoftware/_packaging/kreativsoftware/npm/registry/"
   },
   "repository": {
     "type": "git",
@@ -72,5 +69,8 @@
   "peerDependencies": {
     "react": ">=16.9.0",
     "react-dom": ">=16.9.0"
+  },
+  "publishConfig": {
+    "registry": "https://pkgs.dev.azure.com/kreativsoftware/_packaging/kreativsoftware/npm/registry/"
   }
 }
