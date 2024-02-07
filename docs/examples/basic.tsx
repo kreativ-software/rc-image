@@ -1,5 +1,5 @@
-import * as React from 'react';
 import Image from 'rc-image';
+import * as React from 'react';
 import '../../assets/index.less';
 
 export default function Base() {
@@ -45,6 +45,21 @@ export default function Base() {
         src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
         width={200}
         height={100}
+      />
+
+      <Image
+        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+        width={200}
+        height={100}
+        loading="lazy"
+        fetchPriority="low"
+      />
+      <Image
+        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+        width={200}
+        height={100}
+        loading="eager"
+        fetchPriority="high"
       />
     </div>
   );
