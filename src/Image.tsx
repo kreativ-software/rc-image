@@ -115,6 +115,14 @@ const ImageInternal: CompoundedComponent<ImageProps> = props => {
 
     loading,
     fetchpriority,
+    sizes,
+    srcSet,
+
+    crossOrigin,
+    decoding,
+    draggable,
+    referrerPolicy,
+    useMap,
 
     ...otherProps
   } = props;
