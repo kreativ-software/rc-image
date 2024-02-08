@@ -15,7 +15,7 @@ import PreviewGroup from './PreviewGroup';
 
 declare module 'react' {
   interface ImgHTMLAttributes<T> extends React.HTMLAttributes<T> {
-    fetchPriority?: 'high' | 'low' | 'auto';
+    fetchpriority?: 'high' | 'low' | 'auto';
   }
 }
 
@@ -51,7 +51,7 @@ export interface ImageProps
   prefixCls?: string;
   previewPrefixCls?: string;
   placeholder?: React.ReactNode;
-  fetchPriority?: 'high' | 'low' | 'auto';
+  fetchpriority?: 'high' | 'low' | 'auto';
   fallback?: string;
   rootClassName?: string;
   preview?: boolean | ImagePreviewType;
@@ -74,7 +74,7 @@ export const COMMON_PROPS: (keyof Omit<ImageElementProps, 'src'>)[] = [
   'decoding',
   'draggable',
   'loading',
-  'fetchPriority',
+  'fetchpriority',
   'referrerPolicy',
   'sizes',
   'srcSet',
@@ -112,7 +112,7 @@ const ImageInternal: CompoundedComponent<ImageProps> = props => {
     rootClassName,
 
     loading,
-    fetchPriority,
+    fetchpriority,
 
     ...otherProps
   } = props;

@@ -52,14 +52,14 @@ export default function Base() {
         width={200}
         height={100}
         loading="lazy"
-        fetchPriority="low"
+        fetchpriority="low"
       />
       <Image
         src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
         width={200}
         height={100}
         loading="eager"
-        fetchPriority="high"
+        fetchpriority="high"
       />
     </div>
   );
