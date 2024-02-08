@@ -82,9 +82,11 @@ export const COMMON_PROPS: (keyof Omit<ImageElementProps, 'src'>)[] = [
   'alt',
 ];
 
-function isImageValid(src) {
+function isImageValid(src, loading, fetchPriority) {
   return new Promise(resolve => {
     const img = document.createElement('img');
+    img['fetchPriority'] = fetchPriority;
+    img.loading = loading;
     img.onerror = () => resolve(false);
     img.onload = () => resolve(true);
     img.src = src;
@@ -167,12 +169,12 @@ const ImageInternal: CompoundedComponent<ImageProps> = props => {
   };
 
   useEffect(() => {
-    isImageValid(src).then(isValid => {
+    isImageValid(src, loading, fetchpriority).then(isValid => {
       if (!isValid) {
         setStatus('error');
       }
     });
-  }, [src]);
+  }, [src, loading, fetchpriority]);
 
   useEffect(() => {
     if (isError) {
