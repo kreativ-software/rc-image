@@ -13,6 +13,8 @@ export default function useStatus({
   src: string;
   isCustomPlaceholder?: boolean;
   fallback?: string;
+  loading: "eager" | "lazy"; 
+  fetchpriority: "high" | "low" | "auto";
 }) {
   const [status, setStatus] = useState<ImageStatus>(isCustomPlaceholder ? 'loading' : 'normal');
   const isLoaded = useRef(false);
