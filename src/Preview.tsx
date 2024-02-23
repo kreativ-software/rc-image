@@ -8,8 +8,8 @@ import { PreviewGroupContext } from './context';
 import type { TransformAction, TransformType } from './hooks/useImageTransform';
 import useImageTransform from './hooks/useImageTransform';
 import useMouseEvent from './hooks/useMouseEvent';
-import useTouchEvent from './hooks/useTouchEvent';
 import useStatus from './hooks/useStatus';
+import useTouchEvent from './hooks/useTouchEvent';
 import Operations from './Operations';
 import { BASE_SCALE_RATIO } from './previewConfig';
 
@@ -82,6 +82,8 @@ const PreviewImage: React.FC<PreviewImageProps> = ({ fallback, src, imgRef, ...p
   const [getImgRef, srcAndOnload] = useStatus({
     src,
     fallback,
+    loading: 'lazy',
+    fetchpriority: 'low',
   });
 
   return (
@@ -92,6 +94,8 @@ const PreviewImage: React.FC<PreviewImageProps> = ({ fallback, src, imgRef, ...p
       }}
       {...props}
       {...srcAndOnload}
+      loading="lazy"
+      fetchpriority="low"
     />
   );
 };
