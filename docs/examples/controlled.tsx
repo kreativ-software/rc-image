@@ -20,6 +20,7 @@ export default function Base() {
         src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
         width={200}
         fetchpriority="high"
+        loading="eager"
         preview={{
           visible,
           onVisibleChange: value => {
@@ -28,7 +29,7 @@ export default function Base() {
         }}
       />
       <Image
-        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+        src={require('./images/2.jpeg')}
         width={200}
         fetchpriority="low"
         loading={'lazy'}
