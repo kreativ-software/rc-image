@@ -9,6 +9,7 @@ export type ImageElementProps = Pick<
   | 'draggable'
   | 'loading'
   | 'referrerPolicy'
+  | 'fetchpriority',
   | 'sizes'
   | 'srcSet'
   | 'useMap'

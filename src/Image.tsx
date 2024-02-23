@@ -15,6 +15,12 @@ import type { PreviewProps, ToolbarRenderInfoType } from './Preview';
 import Preview from './Preview';
 import PreviewGroup from './PreviewGroup';
 
+declare module 'react' {
+  interface ImgHTMLAttributes<T> extends React.HTMLAttributes<T> {
+    fetchpriority?: 'high' | 'low' | 'auto';
+  }
+}
+
 export interface ImagePreviewType
   extends Omit<
     IDialogPropTypes,
@@ -85,6 +91,8 @@ const ImageInternal: CompoundedComponent<ImageProps> = props => {
     wrapperClassName,
     wrapperStyle,
     rootClassName,
+    fetchpriority,
+    loading,
 
     ...otherProps
   } = props;
@@ -187,6 +195,8 @@ const ImageInternal: CompoundedComponent<ImageProps> = props => {
         }}
       >
         <img
+          fetchpriority={fetchpriority}
+          loading={loading}
           {...imgCommonProps}
           className={cn(
             `${prefixCls}-img`,

@@ -1,5 +1,5 @@
-import * as React from 'react';
 import Image from 'rc-image';
+import * as React from 'react';
 import '../../assets/index.less';
 
 export default function Base() {
@@ -19,6 +19,19 @@ export default function Base() {
       <Image
         src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
         width={200}
+        fetchpriority="high"
+        preview={{
+          visible,
+          onVisibleChange: value => {
+            setVisible(value);
+          },
+        }}
+      />
+      <Image
+        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+        width={200}
+        fetchpriority="low"
+        loading={'lazy'}
         preview={{
           visible,
           onVisibleChange: value => {

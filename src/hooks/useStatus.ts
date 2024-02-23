@@ -7,6 +7,8 @@ export default function useStatus({
   src,
   isCustomPlaceholder,
   fallback,
+  loading,
+  fetchpriority
 }: {
   src: string;
   isCustomPlaceholder?: boolean;
@@ -19,7 +21,7 @@ export default function useStatus({
   // https://github.com/react-component/image/pull/187
   useEffect(() => {
     let isCurrentSrc = true;
-    isImageValid(src).then(isValid => {
+    isImageValid(src, {loading, fetchpriority}).then(isValid => {
       // https://github.com/ant-design/ant-design/issues/44948
       // If src changes, the previous setStatus should not be triggered
       if (!isValid && isCurrentSrc) {
