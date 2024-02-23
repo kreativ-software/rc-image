@@ -123,6 +123,8 @@ const ImageInternal: CompoundedComponent<ImageProps> = props => {
     src: imgSrc,
     isCustomPlaceholder,
     fallback,
+    loading,
+    fetchpriority,
   });
   const [mousePosition, setMousePosition] = useState<null | { x: number; y: number }>(null);
 
