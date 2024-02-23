@@ -287,7 +287,7 @@ const Preview: React.FC<PreviewProps> = props => {
         prefixCls={prefixCls}
         onClose={onClose}
         visible={visible}
-        classNames={{
+        className={{
           wrapper: wrapClassName,
         }}
         rootClassName={rootClassName}
