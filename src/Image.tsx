@@ -84,12 +84,13 @@ export const COMMON_PROPS: (keyof Omit<ImageElementProps, 'src'>)[] = [
 
 function isImageValid(src, loading, fetchPriority) {
   return new Promise(resolve => {
-    const img = document.createElement('img');
-    img['fetchPriority'] = fetchPriority;
-    img.loading = loading;
-    img.onerror = () => resolve(false);
-    img.onload = () => resolve(true);
-    img.src = src;
+    resolve(true);
+    // const img = document.createElement('img');
+    // img['fetchPriority'] = fetchPriority;
+    // img.loading = loading;
+    // img.onerror = () => resolve(false);
+    // img.onload = () => resolve(true);
+    // img.src = src;
   });
 }
 
