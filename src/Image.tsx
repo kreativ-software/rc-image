@@ -93,6 +93,8 @@ const ImageInternal: CompoundedComponent<ImageProps> = props => {
     rootClassName,
     fetchpriority,
     loading,
+    sizes,
+    srcSet,
 
     ...otherProps
   } = props;
