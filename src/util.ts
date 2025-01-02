@@ -1,8 +1,11 @@
-export function isImageValid(src: string, {loading,fetchpriority}:{loading: "eager" | "lazy"; fetchpriority: "high" | "low" | "auto"}) {
+export function isImageValid(
+  src: string,
+  { loading, fetchPriority }: { loading: 'eager' | 'lazy'; fetchPriority: 'high' | 'low' | 'auto' },
+) {
   return new Promise(resolve => {
-    resolve(true)
+    resolve(true);
     // const img = document.createElement('img');
-    // img['fetchPriority'] = fetchpriority;
+    // img['fetchPriority'] = fetchPriority;
     // img['loading'] = loading;
     // img.onerror = () => resolve(false);
     // img.onload = () => resolve(true);

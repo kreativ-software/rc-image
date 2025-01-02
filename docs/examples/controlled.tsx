@@ -19,7 +19,7 @@ export default function Base() {
       <Image
         src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
         width={200}
-        fetchpriority="high"
+        fetchPriority="high"
         loading="eager"
         preview={{
           visible,

@@ -26,7 +26,8 @@ export type TransformAction =
   | 'doubleClick'
   | 'move'
   | 'dragRebound'
-  | 'touchZoom';
+  | 'touchZoom'
+  | 'reset';
 
 export type UpdateTransformFunc = (
   newTransform: Partial<TransformType>,
@@ -62,8 +63,8 @@ export default function useImageTransform(
 
   const resetTransform = (action: TransformAction) => {
     setTransform(initialTransform);
-    if (onTransform && !isEqual(initialTransform, transform)) {
-      onTransform({ transform: initialTransform, action });
+    if (!isEqual(initialTransform, transform)) {
+      onTransform?.({ transform: initialTransform, action });
     }
   };
 
@@ -91,7 +92,13 @@ export default function useImageTransform(
   };
 
   /** Scale according to the position of centerX and centerY */
-  const dispatchZoomChange: DispatchZoomChangeFunc = (ratio, action, centerX?, centerY?, isTouch?) => {
+  const dispatchZoomChange: DispatchZoomChangeFunc = (
+    ratio,
+    action,
+    centerX?,
+    centerY?,
+    isTouch?,
+  ) => {
     const { width, height, offsetWidth, offsetHeight, offsetLeft, offsetTop } = imgRef.current;
 
     let newRatio = ratio;

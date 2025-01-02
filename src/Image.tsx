@@ -15,10 +15,12 @@ import type { PreviewProps, ToolbarRenderInfoType } from './Preview';
 import Preview from './Preview';
 import PreviewGroup from './PreviewGroup';
 
-declare module 'react' {
-  interface ImgHTMLAttributes<T> extends React.HTMLAttributes<T> {
-    fetchpriority?: 'high' | 'low' | 'auto';
-  }
+export interface ImgInfo {
+  url: string;
+  alt: string;
+  width: string | number;
+  height: string | number;
+  fetchPriority?: 'high' | 'low' | 'auto';
 }
 
 export interface ImagePreviewType
@@ -39,7 +41,7 @@ export interface ImagePreviewType
   movable?: boolean;
   imageRender?: (
     originalNode: React.ReactElement,
-    info: { transform: TransformType },
+    info: { transform: TransformType; image: ImgInfo },
   ) => React.ReactNode;
   onTransform?: PreviewProps['onTransform'];
   toolbarRender?: (
@@ -52,6 +54,7 @@ export interface ImageProps
   extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'placeholder' | 'onClick'> {
   // Original
   src?: string;
+  fetchPriority?: 'high' | 'low' | 'auto';
   wrapperClassName?: string;
   wrapperStyle?: React.CSSProperties;
   prefixCls?: string;
@@ -91,7 +94,7 @@ const ImageInternal: CompoundedComponent<ImageProps> = props => {
     wrapperClassName,
     wrapperStyle,
     rootClassName,
-    fetchpriority,
+    fetchPriority,
     loading,
     sizes,
     srcSet,
@@ -126,7 +129,7 @@ const ImageInternal: CompoundedComponent<ImageProps> = props => {
     isCustomPlaceholder,
     fallback,
     loading,
-    fetchpriority,
+    fetchPriority,
   });
   const [mousePosition, setMousePosition] = useState<null | { x: number; y: number }>(null);
 
@@ -173,7 +176,7 @@ const ImageInternal: CompoundedComponent<ImageProps> = props => {
   const onPreview: React.MouseEventHandler<HTMLDivElement> = e => {
     const { left, top } = getOffset(e.target);
     if (groupContext) {
-      groupContext.onPreview(imageId, left, top);
+      groupContext.onPreview(imageId, src, left, top);
     } else {
       setMousePosition({
         x: left,
@@ -199,7 +202,7 @@ const ImageInternal: CompoundedComponent<ImageProps> = props => {
         }}
       >
         <img
-          fetchpriority={fetchpriority}
+          fetchPriority={fetchPriority}
           loading={loading}
           {...imgCommonProps}
           className={cn(
@@ -247,6 +250,7 @@ const ImageInternal: CompoundedComponent<ImageProps> = props => {
           mousePosition={mousePosition}
           src={src}
           alt={alt}
+          imageInfo={{ width, height }}
           fallback={fallback}
           getContainer={getPreviewContainer}
           icons={icons}
@@ -267,6 +271,8 @@ const ImageInternal: CompoundedComponent<ImageProps> = props => {
 
 ImageInternal.PreviewGroup = PreviewGroup;
 
-ImageInternal.displayName = 'Image';
+if (process.env.NODE_ENV !== 'production') {
+  ImageInternal.displayName = 'Image';
+}
 
 export default ImageInternal;

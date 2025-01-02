@@ -10,11 +10,14 @@ import useImageTransform from './hooks/useImageTransform';
 import useMouseEvent from './hooks/useMouseEvent';
 import useStatus from './hooks/useStatus';
 import useTouchEvent from './hooks/useTouchEvent';
+import type { ImgInfo } from './Image';
 import Operations from './Operations';
 import { BASE_SCALE_RATIO } from './previewConfig';
 
 export type ToolbarRenderInfoType = {
   icons: {
+    prevIcon?: React.ReactNode;
+    nextIcon?: React.ReactNode;
     flipYIcon: React.ReactNode;
     flipXIcon: React.ReactNode;
     rotateLeftIcon: React.ReactNode;
@@ -23,22 +26,30 @@ export type ToolbarRenderInfoType = {
     zoomInIcon: React.ReactNode;
   };
   actions: {
+    onActive?: (offset: number) => void;
     onFlipY: () => void;
     onFlipX: () => void;
     onRotateLeft: () => void;
     onRotateRight: () => void;
     onZoomOut: () => void;
     onZoomIn: () => void;
+    onClose: () => void;
+    onReset: () => void;
   };
   transform: TransformType;
   current: number;
   total: number;
+  image: ImgInfo;
 };
 
 export interface PreviewProps extends Omit<IDialogPropTypes, 'onClose'> {
   imgCommonProps?: React.ImgHTMLAttributes<HTMLImageElement>;
   src?: string;
   alt?: string;
+  imageInfo?: {
+    width: number | string;
+    height: number | string;
+  };
   fallback?: string;
   movable?: boolean;
   rootClassName?: string;
@@ -62,7 +73,7 @@ export interface PreviewProps extends Omit<IDialogPropTypes, 'onClose'> {
   maxScale?: number;
   imageRender?: (
     originalNode: React.ReactElement,
-    info: { transform: TransformType; current?: number },
+    info: { transform: TransformType; current?: number; image?: ImgInfo },
   ) => React.ReactNode;
   onClose?: () => void;
   onTransform?: (info: { transform: TransformType; action: TransformAction }) => void;
@@ -82,8 +93,8 @@ const PreviewImage: React.FC<PreviewImageProps> = ({ fallback, src, imgRef, ...p
   const [getImgRef, srcAndOnload] = useStatus({
     src,
     fallback,
-    loading: 'lazy',
-    fetchpriority: 'low',
+    loading: 'eager',
+    fetchPriority: 'high',
   });
 
   return (
@@ -94,8 +105,6 @@ const PreviewImage: React.FC<PreviewImageProps> = ({ fallback, src, imgRef, ...p
       }}
       {...props}
       {...srcAndOnload}
-      loading="lazy"
-      fetchpriority="low"
     />
   );
 };
@@ -105,6 +114,7 @@ const Preview: React.FC<PreviewProps> = props => {
     prefixCls,
     src,
     alt,
+    imageInfo,
     fallback,
     movable = true,
     onClose,
@@ -198,33 +208,29 @@ const Preview: React.FC<PreviewProps> = props => {
     updateTransform({ flipY: !transform.flipY }, 'flipY');
   };
 
-  const onSwitchLeft = (event?: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    event?.preventDefault();
-    event?.stopPropagation();
-    if (current > 0) {
-      setEnableTransition(false);
-      resetTransform('prev');
-      onChange?.(current - 1, current);
-    }
+  const onReset = () => {
+    resetTransform('reset');
   };
 
-  const onSwitchRight = (event?: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    event?.preventDefault();
-    event?.stopPropagation();
-    if (current < count - 1) {
-      setEnableTransition(false);
-      resetTransform('next');
-      onChange?.(current + 1, current);
+  const onActive = (offset: number) => {
+    const position = current + offset;
+
+    if (!Number.isInteger(position) || position < 0 || position > count - 1) {
+      return;
     }
+
+    setEnableTransition(false);
+    resetTransform(offset < 0 ? 'prev' : 'next');
+    onChange?.(position, current);
   };
 
   const onKeyDown = (event: KeyboardEvent) => {
     if (!visible || !showLeftOrRightSwitches) return;
 
     if (event.keyCode === KeyCode.LEFT) {
-      onSwitchLeft();
+      onActive(-1);
     } else if (event.keyCode === KeyCode.RIGHT) {
-      onSwitchRight();
+      onActive(1);
     }
   };
 
@@ -277,6 +283,12 @@ const Preview: React.FC<PreviewProps> = props => {
     />
   );
 
+  const image = {
+    url: src,
+    alt,
+    ...imageInfo,
+  };
+
   return (
     <>
       <Dialog
@@ -297,7 +309,7 @@ const Preview: React.FC<PreviewProps> = props => {
       >
         <div className={`${prefixCls}-img-wrapper`}>
           {imageRender
-            ? imageRender(imgNode, { transform, ...(groupContext ? { current } : {}) })
+            ? imageRender(imgNode, { transform, image, ...(groupContext ? { current } : {}) })
             : imgNode}
         </div>
       </Dialog>
@@ -319,8 +331,7 @@ const Preview: React.FC<PreviewProps> = props => {
         minScale={minScale}
         maxScale={maxScale}
         toolbarRender={toolbarRender}
-        onSwitchLeft={onSwitchLeft}
-        onSwitchRight={onSwitchRight}
+        onActive={onActive}
         onZoomIn={onZoomIn}
         onZoomOut={onZoomOut}
         onRotateRight={onRotateRight}
@@ -328,7 +339,9 @@ const Preview: React.FC<PreviewProps> = props => {
         onFlipX={onFlipX}
         onFlipY={onFlipY}
         onClose={onClose}
+        onReset={onReset}
         zIndex={restProps.zIndex !== undefined ? restProps.zIndex + 1 : undefined}
+        image={image}
       />
     </>
   );

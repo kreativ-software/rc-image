@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { PreviewGroupContext } from './context';
 import type { TransformType } from './hooks/useImageTransform';
 import usePreviewItems from './hooks/usePreviewItems';
-import type { ImagePreviewType } from './Image';
+import type { ImagePreviewType, ImgInfo } from './Image';
 import type { ImageElementProps, OnGroupPreview } from './interface';
 import type { PreviewProps, ToolbarRenderInfoType } from './Preview';
 import Preview from './Preview';
@@ -12,7 +12,7 @@ import Preview from './Preview';
 export interface PreviewGroupPreview
   extends Omit<
     ImagePreviewType,
-    'icons' | 'mask' | 'maskClassName' | 'onVisibleChange' | 'toolbarRender' | 'imageRender'
+    'mask' | 'maskClassName' | 'onVisibleChange' | 'toolbarRender' | 'imageRender'
   > {
   /**
    * If Preview the show img index
@@ -26,7 +26,7 @@ export interface PreviewGroupPreview
   ) => React.ReactNode;
   imageRender?: (
     originalNode: React.ReactElement,
-    info: { transform: TransformType; current: number },
+    info: { transform: TransformType; current: number; image: ImgInfo },
   ) => React.ReactNode;
   onVisibleChange?: (value: boolean, prevValue: boolean, current: number) => void;
   onChange?: (current: number, prevCurrent: number) => void;
@@ -67,7 +67,7 @@ const Group: React.FC<GroupConsumerProps> = ({
   } = typeof preview === 'object' ? preview : ({} as PreviewGroupPreview);
 
   // ========================== Items ===========================
-  const [mergedItems, register] = usePreviewItems(items);
+  const [mergedItems, register, fromItems] = usePreviewItems(items);
 
   // ========================= Preview ==========================
   // >>> Index
@@ -91,15 +91,19 @@ const Group: React.FC<GroupConsumerProps> = ({
   const [mousePosition, setMousePosition] = useState<null | { x: number; y: number }>(null);
 
   const onPreviewFromImage = React.useCallback<OnGroupPreview>(
-    (id, mouseX, mouseY) => {
-      const index = mergedItems.findIndex(item => item.id === id);
+    (id, imageSrc, mouseX, mouseY) => {
+      const index = fromItems
+        ? mergedItems.findIndex(item => item.data.src === imageSrc)
+        : mergedItems.findIndex(item => item.id === id);
+
+      setCurrent(index < 0 ? 0 : index);
 
       setShowPreview(true);
       setMousePosition({ x: mouseX, y: mouseY });
-      setCurrent(index < 0 ? 0 : index);
+
       setKeepOpenIndex(true);
     },
-    [mergedItems],
+    [mergedItems, fromItems],
   );
 
   // Reset current when reopen

@@ -9,12 +9,13 @@ export type ImageElementProps = Pick<
   | 'draggable'
   | 'loading'
   | 'referrerPolicy'
-  | 'fetchpriority'
   | 'sizes'
   | 'srcSet'
   | 'useMap'
   | 'alt'
->;
+> & {
+  fetchPriority?: 'high' | 'low' | 'auto';
+};
 
 export type PreviewImageElementProps = {
   data: ImageElementProps;
@@ -27,4 +28,4 @@ export type InternalItem = PreviewImageElementProps & {
 
 export type RegisterImage = (id: string, data: PreviewImageElementProps) => VoidFunction;
 
-export type OnGroupPreview = (id: string, mouseX: number, mouseY: number) => void;
+export type OnGroupPreview = (id: string, imageSrc: string, mouseX: number, mouseY: number) => void;
