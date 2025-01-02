@@ -202,7 +202,7 @@ const ImageInternal: CompoundedComponent<ImageProps> = props => {
         }}
       >
         <img
-          fetchPriority={fetchPriority}
+          fetchpriority={fetchpriority}
           loading={loading}
           {...imgCommonProps}
           className={cn(
